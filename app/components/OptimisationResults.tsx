@@ -70,7 +70,10 @@ export default function OptimizationResults({
             </p>
           </>
         ) : (
-          <p>Click "Optimise CGT" to see the recommended selling strategy.</p>
+          <p>
+            Click &quot;Optimise CGT&quot; to see the recommended selling
+            strategy.
+          </p>
         )}
       </CardContent>
     </Card>
