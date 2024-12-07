@@ -39,7 +39,7 @@ export default function OptimizationResults({
       <CardHeader>
         <CardTitle>Optimization Results</CardTitle>
         <CardDescription>
-          Based on your input, here's the optimized selling strategy.
+          Based on your input, here&apos;s the optimized selling strategy.
         </CardDescription>
       </CardHeader>
       <CardContent>
