@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { format } from "date-fns";
 
 interface OptimizationResultsProps {
   results: Transaction[];
@@ -39,7 +40,8 @@ export default function OptimizationResults({
       <CardHeader>
         <CardTitle>Optimization Results</CardTitle>
         <CardDescription>
-          Based on your input, here&apos;s the optimized selling strategy.
+          Based on your input, here&apos;s the optimized selling strategy using
+          FIFO method.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -50,6 +52,7 @@ export default function OptimizationResults({
                 <TableRow>
                   <TableHead>Symbol</TableHead>
                   <TableHead>Quantity to Sell</TableHead>
+                  <TableHead>Purchase Date</TableHead>
                   <TableHead>Gain</TableHead>
                 </TableRow>
               </TableHeader>
@@ -58,6 +61,9 @@ export default function OptimizationResults({
                   <TableRow key={transaction.id}>
                     <TableCell>{transaction.symbol}</TableCell>
                     <TableCell>{transaction.quantity}</TableCell>
+                    <TableCell>
+                      {format(transaction.purchaseDate, "PPP")}
+                    </TableCell>
                     <TableCell>
                       R{calculateGain(transaction).toFixed(2)}
                     </TableCell>

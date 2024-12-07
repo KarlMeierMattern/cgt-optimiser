@@ -7,12 +7,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Transaction } from "../page";
+import { format } from "date-fns";
 
 interface PortfolioTableProps {
   transactions: Transaction[];
+  sortTransactions: (transactions: Transaction[]) => Transaction[];
 }
 
-export default function PortfolioTable({ transactions }: PortfolioTableProps) {
+export default function PortfolioTable({
+  transactions,
+  sortTransactions,
+}: PortfolioTableProps) {
   const calculateGain = (transaction: Transaction) => {
     return (
       transaction.quantity *
@@ -20,9 +25,7 @@ export default function PortfolioTable({ transactions }: PortfolioTableProps) {
     );
   };
 
-  const sortedTransactions = [...transactions].sort(
-    (a, b) => calculateGain(b) - calculateGain(a)
-  );
+  const sortedTransactions = sortTransactions(transactions);
 
   return (
     <div className="rounded-md border">
@@ -33,6 +36,7 @@ export default function PortfolioTable({ transactions }: PortfolioTableProps) {
             <TableHead>Quantity</TableHead>
             <TableHead>Purchase Price</TableHead>
             <TableHead>Current Price</TableHead>
+            <TableHead>Purchase Date</TableHead>
             <TableHead>Total Gain</TableHead>
           </TableRow>
         </TableHeader>
@@ -43,6 +47,7 @@ export default function PortfolioTable({ transactions }: PortfolioTableProps) {
               <TableCell>{transaction.quantity}</TableCell>
               <TableCell>R{transaction.purchasePrice.toFixed(2)}</TableCell>
               <TableCell>R{transaction.currentPrice.toFixed(2)}</TableCell>
+              <TableCell>{format(transaction.purchaseDate, "PPP")}</TableCell>
               <TableCell>R{calculateGain(transaction).toFixed(2)}</TableCell>
             </TableRow>
           ))}
