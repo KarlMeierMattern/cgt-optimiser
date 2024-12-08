@@ -71,7 +71,7 @@ export default function TransactionForm({
             <FormItem>
               <FormLabel>Stock Symbol</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., NPN" {...field} />
+                <Input placeholder="e.g., AAPL" {...field} />
               </FormControl>
               <FormDescription>
                 Enter the stock symbol or ticker.

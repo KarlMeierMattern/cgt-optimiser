@@ -35,12 +35,14 @@ export default function OptimizationResults({
     0
   );
 
+  let remainingExclusion = 40000 - totalGain;
+
   return (
     <Card className="mt-8">
       <CardHeader>
-        <CardTitle>Optimization Results</CardTitle>
+        <CardTitle>Optimisation Results</CardTitle>
         <CardDescription>
-          Based on your input, here&apos;s the optimized selling strategy using
+          Based on your input, here&apos;s the optimised selling strategy using
           FIFO method.
         </CardDescription>
       </CardHeader>
@@ -72,7 +74,10 @@ export default function OptimizationResults({
               </TableBody>
             </Table>
             <p className="mt-4 font-semibold">
-              Total Gain: R{totalGain.toFixed(2)}
+              Annual exclusion utilised: R{totalGain.toFixed(2)}
+            </p>
+            <p className="mt-4 font-semibold">
+              Remaining annual exclusion: R{remainingExclusion.toFixed(2)}
             </p>
           </>
         ) : (
