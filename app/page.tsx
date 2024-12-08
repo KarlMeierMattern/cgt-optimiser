@@ -49,56 +49,56 @@ export default function Home() {
       group.sort((a, b) => a.purchaseDate.getTime() - b.purchaseDate.getTime());
     });
 
-    // Create a map to store the earliest date for each symbol
-    const symbolEarliestDates = new Map<string, Date>();
-    Object.entries(groupedTransactions).forEach(([symbol, transactions]) => {
-      symbolEarliestDates.set(symbol, transactions[0].purchaseDate);
+    // Create a list of all transactions with their FIFO-sorted positions
+    const allTransactions = Object.values(groupedTransactions).flat();
+
+    // Sort all transactions by gain, but maintain FIFO order within same symbol
+    return allTransactions.sort((a, b) => {
+      const gainA = calculateGain(a);
+      const gainB = calculateGain(b);
+
+      // If different symbols, sort by gain
+      if (a.symbol !== b.symbol) {
+        return gainB - gainA;
+      }
+
+      // If same symbol, maintain FIFO order
+      return a.purchaseDate.getTime() - b.purchaseDate.getTime();
     });
-
-    // Calculate total gain per symbol
-    const symbolGains = Object.entries(groupedTransactions).map(
-      ([symbol, transactions]) => ({
-        symbol,
-        totalGain: transactions.reduce((sum, t) => sum + calculateGain(t), 0),
-        earliestDate: symbolEarliestDates.get(symbol)!,
-      })
-    );
-
-    // Sort symbols by total gain
-    symbolGains.sort((a, b) => b.totalGain - a.totalGain);
-
-    // Return transactions in correct order
-    return symbolGains.map(({ symbol }) => groupedTransactions[symbol]).flat();
   };
 
   const optimizeCGT = () => {
     const sortedTransactions = sortTransactions(transactions);
     let remainingExclusion = 40000;
     const optimizedTransactions: Transaction[] = [];
+    let currentIndex = 0;
 
-    for (const transaction of sortedTransactions) {
-      const gain = calculateGain(transaction);
+    while (remainingExclusion > 0 && currentIndex < sortedTransactions.length) {
+      const transaction = sortedTransactions[currentIndex];
+      const gainPerShare = transaction.currentPrice - transaction.purchasePrice;
+      const maxSharesPossible = Math.floor(remainingExclusion / gainPerShare);
 
-      if (gain <= remainingExclusion) {
+      if (maxSharesPossible >= transaction.quantity) {
+        // Can sell all shares from this transaction
+        const gain = calculateGain(transaction);
         optimizedTransactions.push(transaction);
         remainingExclusion -= gain;
-      } else if (remainingExclusion > 0) {
-        const partialQuantity = Math.floor(
-          (remainingExclusion / gain) * transaction.quantity
-        );
-        if (partialQuantity > 0) {
-          const partialTransaction = {
-            ...transaction,
-            quantity: partialQuantity,
-            id: `${transaction.id}-partial`,
-          };
-          optimizedTransactions.push(partialTransaction);
-          remainingExclusion = 0;
-        }
-        break;
+        currentIndex++;
+      } else if (maxSharesPossible > 0) {
+        // Can sell partial shares from this transaction
+        const partialTransaction = {
+          ...transaction,
+          quantity: maxSharesPossible,
+          id: `${transaction.id}-partial`,
+        };
+        const gain = calculateGain(partialTransaction);
+        optimizedTransactions.push(partialTransaction);
+        remainingExclusion -= gain;
+        currentIndex++;
+      } else {
+        // Can't sell any shares from this transaction, try next one
+        currentIndex++;
       }
-
-      if (remainingExclusion <= 0) break;
     }
 
     setOptimisationResults(optimizedTransactions);

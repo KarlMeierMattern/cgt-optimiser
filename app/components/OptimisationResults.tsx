@@ -35,7 +35,7 @@ export default function OptimizationResults({
     0
   );
 
-  let remainingExclusion = 40000 - totalGain;
+  const remainingExclusion = 40000 - totalGain;
 
   return (
     <Card className="mt-8">
