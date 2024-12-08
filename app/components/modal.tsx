@@ -37,9 +37,12 @@ export const DialogHeader = () => {
           Capital Gains Tax (CGT)
         </a>{" "}
         exclusion. It does this by ranking stocks by the highest gain per
-        transaction. It suggests selling shares in that order until your CGT
-        exclusion is fully utilised. It calculates the exact number of shares to
-        sell, ensuring maximum tax-free profit.
+        transaction. It works by ranking stocks based on the highest gain per
+        transaction, while also accounting for the FIFO (First In, First Out)
+        rule to rank shares of the same kind by their purchase date. The tool
+        suggests selling shares in that order until your CGT exclusion is fully
+        utilised and calculates the exact number of shares to sell, ensuring
+        maximum tax-free profit.
       </p>
     </>
   );
