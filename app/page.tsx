@@ -107,7 +107,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto pt-8 pb-32 pl-4">
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             <TransactionForm onAddTransaction={addTransaction} />
@@ -125,7 +125,7 @@ export default function Home() {
         </div>
       </main>
       <footer>
-        <div className="fixed bottom-4 w-full text-center">
+        <div className="fixed bottom-0 left-0 w-full bg-black text-white p-4 text-center">
           <p>
             Built by{" "}
             <a

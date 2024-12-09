@@ -63,7 +63,10 @@ export default function TransactionForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 w-full max-w-xs sm:max-w-none rounded-md"
+      >
         <FormField
           control={form.control}
           name="symbol"

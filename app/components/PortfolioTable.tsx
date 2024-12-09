@@ -28,7 +28,7 @@ export default function PortfolioTable({
   const sortedTransactions = sortTransactions(transactions);
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border w-full max-w-xs sm:max-w-none">
       <Table>
         <TableHeader>
           <TableRow>

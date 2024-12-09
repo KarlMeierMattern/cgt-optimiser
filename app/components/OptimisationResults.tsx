@@ -38,7 +38,7 @@ export default function OptimizationResults({
   const remainingExclusion = 40000 - totalGain;
 
   return (
-    <Card className="mt-8">
+    <Card className="mt-8 w-full max-w-xs sm:max-w-none">
       <CardHeader>
         <CardTitle>Optimisation Results</CardTitle>
         <CardDescription>
